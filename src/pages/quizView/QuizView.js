@@ -19,12 +19,12 @@ function QuizView() {
             <div className="quizView_wrapper">
                 <div className="quizView_title">YOUR QUIZZES</div>
                 
-                <div className="quizView_createQuizBtn">
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_createQuizBtn">
                     <div className="quizView_createQuizBtn_iconSection">
                         <img src={newIcon} alt="" />
                     </div>
                     <div className="quizView_createQuizBtn_textSection"><p>Create a new quiz</p></div>
-                </div>
+                </motion.div>
 
                 <div className="quizView_quizBtn">
                     <div className="quizView_quizBtn_iconSection">
