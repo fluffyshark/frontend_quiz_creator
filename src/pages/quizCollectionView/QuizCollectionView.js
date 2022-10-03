@@ -9,7 +9,7 @@ function QuizCollectionView() {
         <Navbar />
 
         <div className="quizCollectionView_quizContainer">
-
+  
         </div>
         
     </div>

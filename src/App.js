@@ -1,13 +1,13 @@
 import './App.css';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import QuizCollectionView from './pages/quizCollectionView/QuizCollectionView';
+import QuizView from './pages/quizView/QuizView';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<QuizCollectionView />}></Route>  
+          <Route path="/" element={<QuizView />}></Route>  
         </Routes>
       </BrowserRouter>
     </div>

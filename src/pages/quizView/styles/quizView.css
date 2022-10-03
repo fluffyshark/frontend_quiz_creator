@@ -1,0 +1,106 @@
+.quizView {
+    width: 100%;
+    height: 100vh;
+}
+.quizView_container {
+    width: 100%;
+    height: 1000px;
+    background-color: #f2f2f1;
+    display: flex;
+    justify-content: center;
+}
+.quizView_wrapper {
+    width: 700px;
+    height: 100%;
+}
+.quizView_title {
+    width: 100%;
+    height: 75px;
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.quizView_createQuizBtn {
+    width: 100%;
+    height: 60px;
+    background-color: white;
+    border-radius: 7px;
+    border-bottom: 2.5px solid #d9d9d9;
+    display: flex;
+    overflow: hidden;
+}
+.quizView_createQuizBtn_iconSection {
+    width: 80px;
+    height: 100%;
+    background-color: #d9d9d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.quizView_createQuizBtn_iconSection>img {
+    width: 60px;
+}
+.quizView_createQuizBtn_textSection {
+    width: calc(100% - 80px);
+    height: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.quizView_createQuizBtn_textSection>p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #666666;
+    margin-left: 20px;
+}
+
+
+
+.quizView_quizBtn {
+    width: 100%;
+    height: 60px;
+    background-color: white;
+    border-radius: 7px;
+    border-bottom: 2.5px solid #d9d9d9;
+    display: flex;
+    margin-top: 7px;
+    overflow: hidden;
+}
+.quizView_quizBtn_iconSection {
+    width: 80px;
+    height: 100%;
+    background-color: #22b703;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.quizView_quizBtn_iconSection>img {
+    width: 55px;
+}
+.quizView_quizBtn_textSection {
+    width: calc(100% - 80px - 110px);
+    height: 100%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.quizView_quizBtn_textSection>p {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+    margin-left: 20px;
+}
+.quizView_quizBtn_actionSection {
+    width: 110px;
+    height: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.quizView_quizBtn_actionSection>img {
+    width: 25px;
+    cursor: pointer;
+}
