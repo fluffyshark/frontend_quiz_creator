@@ -58,17 +58,19 @@
 input:focus{outline: none}
 
 .quizCreateView_writeQuestion_save {
-    width: 60px;
-    height: 100%;
-    position: absolute;
-    left: 92%;
-    display: flex;justify-content: center;
-    align-items: center;
-}
-.quizCreateView_writeQuestion_save>img {
     width: 35px;
+    height: 35px;
+    position: absolute;
+    top:19%;
+    left: 93%;
     cursor: pointer;
+    display: flex; justify-content: center; align-items: center;
+    background: url("../../../imageAssets/saveIcon.png") no-repeat; background-position: center; background-size: contain;
 }
+.quizCreateView_writeQuestion_save:hover {
+    background: url("../../../imageAssets/saveIcon_hover.png") no-repeat; background-position: center; background-size: contain;
+}
+
 .quizCreateView_writeAnswers_row1 {
     width: 100%;
     height: auto;
@@ -189,6 +191,29 @@ input:focus{outline: none}
     align-items: center;
     justify-content: space-evenly;
 }
-.quizCreateView_questionbox_iconbox>img {
+.quizCreateView_questionbox_iconbox_edit {
     width: 17px;
+    height: 17px;
+    background: url("../../../imageAssets/small_editIcon.png") no-repeat; background-position: center; background-size: contain;
+} 
+.quizCreateView_questionbox_iconbox_edit:hover {
+    background: url("../../../imageAssets/small_editIcon_hover.png") no-repeat; background-position: center; background-size: contain;
+}
+
+.quizCreateView_questionbox_iconbox_copy {
+    width: 17px;
+    height: 17px;
+    background: url("../../../imageAssets/small_copyIcon.png") no-repeat; background-position: center; background-size: contain;
+}
+.quizCreateView_questionbox_iconbox_copy:hover {
+    background: url("../../../imageAssets/small_copyIcon_hover.png") no-repeat; background-position: center; background-size: contain;
+}
+
+.quizCreateView_questionbox_iconbox_delete {
+    width: 17px;
+    height: 17px;
+    background: url("../../../imageAssets/small_deleteIcon.png") no-repeat; background-position: center; background-size: contain;
+}
+.quizCreateView_questionbox_iconbox_delete:hover {
+    background: url("../../../imageAssets/small_deleteIcon_delete.png") no-repeat; background-position: center; background-size: contain;
 }
