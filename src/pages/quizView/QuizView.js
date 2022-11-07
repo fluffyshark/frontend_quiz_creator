@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Navbar from '../../sharedComponents/navbar/Navbar'
 import "./styles/quizView.css"
 import { motion } from "framer-motion";
@@ -34,12 +35,12 @@ function QuizView() {
             <div className="quizView_wrapper">
                 <div className="quizView_title">YOUR QUIZZES</div>
                 
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_createQuizBtn">
+                <Link to="/createquiz" style={{textDecoration:"none"}}><motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_createQuizBtn">
                     <div className="quizView_createQuizBtn_iconSection">
                         <img src={newIcon} alt="" />
                     </div>
                     <div className="quizView_createQuizBtn_textSection"><p>Create a new quiz</p></div>
-                </motion.div>
+                </motion.div></Link>
 
                 <div className="quizView_quizBtn_container" >
                 

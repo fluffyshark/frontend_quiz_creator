@@ -12,14 +12,12 @@ function QuizCreateView() {
     const [questionText, setQuestionText] = useState("")
     const [answerAlt, setAnswerAlt] = useState([])
     const [quiz, setQuiz] = useState([{question: "No questions yet"}])
-    const [quizQustion, setQuizQuestion] = useState({question: "", correct: [], answerAlt1: "", answerAlt2: "", answerAlt3: "", answerAlt4: ""})
+    const [quizQustion, setQuizQuestion] = useState({id: 0, question: "", correct: [], answerAlt1: "", answerAlt2: "", answerAlt3: "", answerAlt4: ""})
     const [edit, setEdit] = useState({})
-    const [copyOrigin, setCopyOrigin] = useState({})
 
     // NEXT - RESTRICT SAVE IF QUESTION HAS NOO QUESTION TEXT OR ONE CORRECT ANSWER
     // NEXT - WRITE ERROR MESSAGE IN RED WHEN QUESTION IN NOT CORRECTLY DONE
     // NEXT - ROTATE QUESTION LIST SO NEWEST CREATED QUESTION IS IN THE TOP
-    // NEXT - GET DUBLICATE QUESTIONS TO WORK 
 
     
     // Add question text input to state: questionText
@@ -41,21 +39,24 @@ function QuizCreateView() {
     }
 
 
+
     const saveQuestion = () => {
         
         // Remove "No questions yet" from quiz state
         setQuiz(quiz.filter(item => item.question !== "No questions yet"));
 
-        
         // If this question is an edit, then remove old question that will be replaced
         if (edit.hasOwnProperty("question") ) {
-            setQuiz(quiz.filter(item => item.question !== edit.question));
+            setQuiz(quiz.filter(item => item.id !== edit.id));
         }
-        
-        // If there exist and copy, then add that again as it will otherwise disappear when replased due to edit functionality
-        if (copyOrigin.hasOwnProperty("question") ) {
-            setQuiz(quiz => [...quiz, copyOrigin]);
-        }
+
+
+        // Give question a id
+        const id = Math.floor(Math.random() * 100000000);
+        let newArr = quizQustion
+        newArr.id = id
+        setQuizQuestion(newArr)
+
         
         // Add questionText, answerAlt, correctAnswers to quizQustion
         setQuiz(quiz => [...quiz, quizQustion]);
@@ -71,6 +72,12 @@ function QuizCreateView() {
         document.getElementById("thirdAltImg").src = wrongIcon
         document.getElementById("fouthAltImg").src = wrongIcon
         
+        setAnswerAlt([])
+        setQuestionText("")
+        setCorrectAnswers([0,0,0,0])
+        setQuizQuestion({id: 0, question: "", correct: [], answerAlt1: "", answerAlt2: "", answerAlt3: "", answerAlt4: ""})
+
+        // Empty edit state
         setTimeout(function() {setEdit({})}, 100);
         
     }
@@ -78,7 +85,7 @@ function QuizCreateView() {
 
     // Add question input values to quizQuestion state 
     useEffect(() => {
-        setQuizQuestion({question: questionText, correct: correctAnswers, answerAlt1: answerAlt[0], answerAlt2: answerAlt[1], answerAlt3: answerAlt[2], answerAlt4: answerAlt[3]})
+        setQuizQuestion({id:0, question: questionText, correct: correctAnswers, answerAlt1: answerAlt[0], answerAlt2: answerAlt[1], answerAlt3: answerAlt[2], answerAlt4: answerAlt[3]})
     }, [questionText, correctAnswers, answerAlt])
   
 
@@ -94,6 +101,10 @@ function QuizCreateView() {
         document.getElementById("answerAlt3").value = quiz[index].answerAlt3
         document.getElementById("answerAlt4").value = quiz[index].answerAlt4
 
+        setQuestionText(quiz[index].question)
+        let newAnserAlt = [quiz[index].answerAlt1, quiz[index].answerAlt2, quiz[index].answerAlt3, quiz[index].answerAlt4]
+        setAnswerAlt(newAnserAlt)
+
         // Add correct or wrong image
         if (quiz[index].correct[0] === 1) {document.getElementById("firstAltImg").src = okIcon} else {document.getElementById("firstAltImg").src = wrongIcon}
         if (quiz[index].correct[1] === 1) {document.getElementById("secondAltImg").src = okIcon} else {document.getElementById("secondAltImg").src = wrongIcon}
@@ -104,11 +115,13 @@ function QuizCreateView() {
 
 
     function deleteQuestion(index) {
+
+        console.log("quiz", quiz)
         // Make new declaration of question values
         const deleteQ = quiz[index]
-        // Remove question from quiz list after 10 milliseconds
+        // Remove question from quiz list after 100 milliseconds     
         setTimeout(function() {
-            setQuiz(quiz.filter(item => item.question !== deleteQ.question));
+            setQuiz(quiz.filter(item => item.id !== deleteQ.id));
         }, 100);
         
     }
@@ -116,14 +129,18 @@ function QuizCreateView() {
 
     function copyQuestion(index) {
         // Make copy of question values
-        const questionCopy = quiz[index]
+        let questionCopy = structuredClone(quiz[index])
+        // Create a new unique id for the new duplicate
+        const id = Math.floor(Math.random() * 100000000); questionCopy.id = id
         // Add copy to quiz list
-        setQuiz(quiz => [...quiz, questionCopy]);
-        // Storing old the copied question
-        setCopyOrigin(questionCopy)
+        setQuiz(quiz => [...quiz, questionCopy]); 
     }
 
+    useEffect(() => {
+        console.log("quiz", quiz)
+    })
 
+    
 
     // Separation of Framer Motion animation for buttons
     const btnMotion = {
@@ -193,7 +210,7 @@ function QuizCreateView() {
                                     <div className="quizCreateView_questionbox_iconbox">
                                         <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {editQuestion(i)}} className='quizCreateView_questionbox_iconbox_edit'></motion.div>
                                         <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {copyQuestion(i)}} className='quizCreateView_questionbox_iconbox_copy'></motion.div>
-                                        <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {deleteQuestion(i)}}  className='quizCreateView_questionbox_iconbox_delete'></motion.div>
+                                        <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {deleteQuestion(i)}} id="deletebtn"  className='quizCreateView_questionbox_iconbox_delete'></motion.div>
                                     </div>
                                 </div>
                             )

@@ -8,8 +8,8 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<QuizCreateView />}></Route>  
-          <Route path="/view" element={<QuizView />}></Route>  
+          <Route path="/" element={<QuizView />}></Route>  
+          <Route path="/createquiz" element={<QuizCreateView />}></Route>   
           <Route path="/stats" element={<QuizStats />}></Route>  
 
          
