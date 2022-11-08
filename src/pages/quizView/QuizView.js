@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../../sharedComponents/navbar/Navbar'
 import "./styles/quizView.css"
@@ -8,6 +8,8 @@ import playIcon from "../../imageAssets/playIcon.png"
 import editIcon from "../../imageAssets/editIcon.png"
 import reportIcon from "../../imageAssets/reportIcon.png"
 import deleteIcon from "../../imageAssets/deleteIcon.png"
+import useFetch from '../../sharedComponents/hooks/useFetch';
+import axios from "axios";
 
 
 function QuizView() {
@@ -24,6 +26,9 @@ function QuizView() {
             setReportToggle(true)
         }
     }
+
+    const {data, loading, error} = useFetch("http://localhost:8800/server/hotels")
+    console.log("data", data)
 
 
   return (

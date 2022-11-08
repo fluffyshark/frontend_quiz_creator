@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../sharedComponents/navbar/Navbar'
+import { useNavigate } from 'react-router-dom'
 import "./styles/quizCreateView.css"
 import { motion } from "framer-motion";
 import okIcon from "../../imageAssets/okIcon.png";
@@ -15,9 +16,12 @@ function QuizCreateView() {
     const [quizQustion, setQuizQuestion] = useState({id: 0, question: "", correct: [], answerAlt1: "", answerAlt2: "", answerAlt3: "", answerAlt4: ""})
     const [edit, setEdit] = useState({})
 
+    let navigate = useNavigate()
     // NEXT - RESTRICT SAVE IF QUESTION HAS NOO QUESTION TEXT OR ONE CORRECT ANSWER
     // NEXT - WRITE ERROR MESSAGE IN RED WHEN QUESTION IN NOT CORRECTLY DONE
     // NEXT - ROTATE QUESTION LIST SO NEWEST CREATED QUESTION IS IN THE TOP
+    // NEXT - SAVE QUIZ TO DATABASE
+    // NEXT - CREATE USENAVIGATE TO FIRSTPAGE
 
     
     // Add question text input to state: questionText
@@ -149,6 +153,10 @@ function QuizCreateView() {
         trans:{type: "spring", stiffness: 500, damping: 100}
     }
 
+
+    function saveAndExit() {
+        navigate('/')
+    }
     
    
     return (
@@ -160,7 +168,17 @@ function QuizCreateView() {
                 
                 {/* Create questions section */}
 
-                <div className="quizCreateView_title">CREATE  QUIZ</div>
+                <div className="quizCreateView_wrapper_top">
+                    <div className="quizCreateView_wrapper_top_left"></div>
+                    <div className="quizCreateView_wrapper_top_middle">
+                        <div className="quizCreateView_title">CREATE  QUIZ</div>
+                    </div>
+                    <div className="quizCreateView_wrapper_top_right">
+                        <div className="quizCreateView_doneBtn" onClick={() => {saveAndExit()}}><p>Done</p></div>
+                    </div>
+                    
+                    
+                </div>
                 
                 <div className="quizCreateView_createSection">
                     

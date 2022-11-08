@@ -11,8 +11,6 @@ function App() {
           <Route path="/" element={<QuizView />}></Route>  
           <Route path="/createquiz" element={<QuizCreateView />}></Route>   
           <Route path="/stats" element={<QuizStats />}></Route>  
-
-         
         </Routes>
       </BrowserRouter>
     </div>
