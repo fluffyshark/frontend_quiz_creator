@@ -115,7 +115,7 @@
     justify-content: space-evenly;
     align-items: center;
 }
-.quizView_quizBtn_actionSection>img {
+.quizView_quizBtn_btns {
     width: 25px;
     cursor: pointer;
 }

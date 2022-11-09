@@ -9,7 +9,6 @@ import editIcon from "../../imageAssets/editIcon.png"
 import reportIcon from "../../imageAssets/reportIcon.png"
 import deleteIcon from "../../imageAssets/deleteIcon.png"
 import useFetch from '../../sharedComponents/hooks/useFetch';
-import axios from "axios";
 
 
 function QuizView() {
@@ -25,11 +24,15 @@ function QuizView() {
             document.getElementById("quizView_quizBtn_reportcard_container").style.height = "0px"
             setReportToggle(true)
         }
-    }
+    } // End of toggleReportContainer()
 
-    const {data, loading, error} = useFetch("http://localhost:8800/server/hotels")
+
+    
+    const {data, loading, error} = useFetch("http://localhost:8800/server/quiz")
     console.log("data", data)
 
+
+    // NEXT - GET QUIZ FROM DATABASE
 
   return (
     <div className='quizView'>
@@ -49,22 +52,40 @@ function QuizView() {
 
                 <div className="quizView_quizBtn_container" >
                 
-                    <div className="quizView_quizBtn">
-                        <div className="quizView_quizBtn_iconSection">
-                            <motion.img whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.75 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} src={playIcon} alt="" />
-                        </div>
-                        <div className="quizView_quizBtn_textSection"><p>Judendomen</p></div>
-                        <div className="quizView_quizBtn_actionSection">
-                            <motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} src={editIcon} alt="" />
-                            <motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} onClick={() => {toggleReportContainer(setReportToggle(true))}} src={reportIcon} alt="" />
-                            <motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} src={deleteIcon} alt="" />
-                        </div>
-                    </div>
-                
-                    <div id="quizView_quizBtn_reportcard_container" className="quizView_quizBtn_reportcard_container">
-                        <div className="quizView_quizBtn_reportcard"><p>Report</p><p>2022-09-30</p></div>
-                       
-                    </div>
+                    {loading ? ("Loading, quiz") : (
+
+
+                        data.map((quiz) => {
+                            return (
+                                    <div key={quiz._id}>
+                                        <div className="quizView_quizBtn">
+                                            <div className="quizView_quizBtn_iconSection">
+                                                <motion.img whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.75 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} src={playIcon} alt="" />
+                                            </div>
+                                            <div className="quizView_quizBtn_textSection"><p>{quiz.quizName}</p></div>
+                                            <div className="quizView_quizBtn_actionSection">
+                                               <Link to={`/createquiz/${quiz._id}`}><motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_quizBtn_btns" src={editIcon} alt="" /></Link>
+                                                <motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_quizBtn_btns" onClick={() => {toggleReportContainer(setReportToggle(true))}} src={reportIcon} alt="" />
+                                                <motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_quizBtn_btns" src={deleteIcon} alt="" />
+                                            </div>
+                                        </div>
+                                    
+                                        <div id="quizView_quizBtn_reportcard_container" className="quizView_quizBtn_reportcard_container">
+                                            <div className="quizView_quizBtn_reportcard"><p>Report</p><p>2022-09-30</p></div>
+                                        
+                                        </div>
+                                    </div>
+                                    )
+                        })
+
+
+                    ) }
+                    
+
+                    
+
+
+
                 </div>
 
                 

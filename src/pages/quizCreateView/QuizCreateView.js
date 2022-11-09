@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../sharedComponents/navbar/Navbar'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import useFetch from '../../sharedComponents/hooks/useFetch';
 import "./styles/quizCreateView.css"
 import { motion } from "framer-motion";
 import okIcon from "../../imageAssets/okIcon.png";
@@ -16,13 +17,25 @@ function QuizCreateView() {
     const [quizQustion, setQuizQuestion] = useState({id: 0, question: "", correct: [], answerAlt1: "", answerAlt2: "", answerAlt3: "", answerAlt4: ""})
     const [edit, setEdit] = useState({})
 
+    const location = useLocation()
+    let quizID = location.pathname.split("/")[2]
+
     let navigate = useNavigate()
     // NEXT - RESTRICT SAVE IF QUESTION HAS NOO QUESTION TEXT OR ONE CORRECT ANSWER
     // NEXT - WRITE ERROR MESSAGE IN RED WHEN QUESTION IN NOT CORRECTLY DONE
     // NEXT - ROTATE QUESTION LIST SO NEWEST CREATED QUESTION IS IN THE TOP
-    // NEXT - SAVE QUIZ TO DATABASE
-    // NEXT - CREATE USENAVIGATE TO FIRSTPAGE
+    // NEXT - ADD CORRECT QUIZ DATA IF EDIT QUIZ
+    // NEXT - CREATE A LOGIN PAGE AND SEND DATA FROM THERE
 
+    const {data, loading, error} = useFetch(`http://localhost:8800/server/quiz/${quizID}`)
+    console.log(data)
+
+    /*
+    if (location ==! "/createquiz") {
+            const {data, loading, error} = useFetch(`http://localhost:8800/server/quiz/${quizID}`)
+            let quizID = location.pathname.split("/")[2]
+    }
+    */
     
     // Add question text input to state: questionText
     const questionTextInput = event => {setQuestionText(event.target.value)};

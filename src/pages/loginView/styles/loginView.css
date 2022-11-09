@@ -1,0 +1,86 @@
+.loginView {
+    width: 100%;
+    height: 100vh;
+    background-color: #f2f2f1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loginView_container {
+    width: 350px;
+    height: 300px;
+}
+.loginView_title {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loginView_title>p {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 35px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.loginView_box {
+    width: 100%;
+    height: 25%; 
+}
+.loginView_box_box {
+    width: 100%;
+    height: 60px;
+    border-radius: 5px;
+    display: flex;
+    overflow: hidden;
+    border-bottom: 3px solid #d9d9d9;
+}
+.loginView_box_box>input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
+    color: #666666;
+}
+
+.loginView_box_IconContainer {
+    width: 60px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+.loginView_box_IconContainer>img {
+    width: 30px;
+    height: 30px;
+}
+
+.loginView_login_box {
+    width: 100%;
+    height: 25%; 
+    display: flex;
+    justify-content: center;
+}
+
+.loginView_loginBtn {
+    width: 125px;
+    height: 40px;
+    background-color: white;
+    border-bottom: 3px solid #d9d9d9;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
+    color: #666666;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
