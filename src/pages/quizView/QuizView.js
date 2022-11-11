@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../../sharedComponents/navbar/Navbar'
 import "./styles/quizView.css"
@@ -9,11 +9,15 @@ import editIcon from "../../imageAssets/editIcon.png"
 import reportIcon from "../../imageAssets/reportIcon.png"
 import deleteIcon from "../../imageAssets/deleteIcon.png"
 import useFetch from '../../sharedComponents/hooks/useFetch';
-
+import { AuthContext } from '../../sharedComponents/context/AuthContext'
 
 function QuizView() {
 
     const [reportToggle, setReportToggle] = useState(false)
+    const [usersQuiz, setUsersQuiz] = useState([])
+
+    const {data, loading, error} = useFetch("http://localhost:8800/server/quiz")
+    const { user } = useContext(AuthContext)
 
     function toggleReportContainer() {
         if (reportToggle) {
@@ -26,13 +30,38 @@ function QuizView() {
         }
     } // End of toggleReportContainer()
 
-
     
-    const {data, loading, error} = useFetch("http://localhost:8800/server/quiz")
-    console.log("data", data)
+    
+    // Store user created quizes in usersQuiz state
+    function filterUsersQuiz() {
+        // Only run if data is fetched (not empty)
+        if (data.length > 0) {
+         
+            let userQuizNested = []
+            let userOwnedQuiz = []
+
+            // Sort the quizes that the user created into an array (create a nested array)
+            user.quizID.map((quiz) => {
+                userQuizNested.push(data.filter(quiz1 => quiz1._id === quiz))
+            })
+        
+            // Remove the array nesting
+            for (let i = 0; i < userQuizNested.length; i++) {
+                userOwnedQuiz[i] = userQuizNested[i][0]
+            }
+
+            // Store user created quiz in state
+            setUsersQuiz(userOwnedQuiz)
+        }
+    } // End of filterUsersQuiz()
 
 
-    // NEXT - GET QUIZ FROM DATABASE
+
+    useEffect(() => {filterUsersQuiz()}, [data])
+
+
+    // NEXT - GET SELECTED QUIZ WHEN CLICKING ON EDIT BUTTON
+  
 
   return (
     <div className='quizView'>
@@ -41,7 +70,11 @@ function QuizView() {
 
         <div className="quizView_container">
             <div className="quizView_wrapper">
+                
+
                 <div className="quizView_title">YOUR QUIZZES</div>
+                
+                
                 
                 <Link to="/createquiz" style={{textDecoration:"none"}}><motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_createQuizBtn">
                     <div className="quizView_createQuizBtn_iconSection">
@@ -54,9 +87,9 @@ function QuizView() {
                 
                     {loading ? ("Loading, quiz") : (
 
-
-                        data.map((quiz) => {
+                        usersQuiz.map((quiz) => {
                             return (
+                                
                                     <div key={quiz._id}>
                                         <div className="quizView_quizBtn">
                                             <div className="quizView_quizBtn_iconSection">
@@ -75,11 +108,13 @@ function QuizView() {
                                         
                                         </div>
                                     </div>
+                               
                                     )
                         })
 
 
-                    ) }
+
+                    )}
                     
 
                     

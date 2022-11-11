@@ -168,7 +168,7 @@ function QuizCreateView() {
 
 
     function saveAndExit() {
-        navigate('/')
+        navigate('/quizView')
     }
     
    
