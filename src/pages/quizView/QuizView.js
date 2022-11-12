@@ -76,7 +76,7 @@ function QuizView() {
                 
                 
                 
-                <Link to="/createquiz" style={{textDecoration:"none"}}><motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_createQuizBtn">
+                <Link to="/createquiz/" style={{textDecoration:"none"}}><motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.95 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_createQuizBtn">
                     <div className="quizView_createQuizBtn_iconSection">
                         <img src={newIcon} alt="" />
                     </div>
@@ -97,7 +97,7 @@ function QuizView() {
                                             </div>
                                             <div className="quizView_quizBtn_textSection"><p>{quiz.quizName}</p></div>
                                             <div className="quizView_quizBtn_actionSection">
-                                               <Link to={`/createquiz/${quiz._id}`}><motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_quizBtn_btns" src={editIcon} alt="" /></Link>
+                                               <Link to={`/editquiz/${quiz._id}`} style={{ textDecoration: 'none' }}><motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_quizBtn_btns" src={editIcon} alt="" /></Link>
                                                 <motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_quizBtn_btns" onClick={() => {toggleReportContainer(setReportToggle(true))}} src={reportIcon} alt="" />
                                                 <motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_quizBtn_btns" src={deleteIcon} alt="" />
                                             </div>

@@ -1,16 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
-import axios from "axios"
 import Navbar from '../../sharedComponents/navbar/Navbar'
-import { useNavigate } from 'react-router-dom'
-import "./styles/quizCreateView.css"
+import { useLocation, useNavigate } from 'react-router-dom'
+import useFetch from '../../sharedComponents/hooks/useFetch';
+import "./styles/quizEditView.css"
 import { motion } from "framer-motion";
 import okIcon from "../../imageAssets/okIcon.png";
 import wrongIcon from "../../imageAssets/wrongIcon.png";
-import { AuthContext } from '../../sharedComponents/context/AuthContext'
-import { EditorToDatabaseQuiz } from "../../sharedComponents/quizFormatter/QuizFormatter"
+import { DatabaseToEditorQuiz, EditorToDatabaseQuiz } from "../../sharedComponents/quizFormatter/QuizFormatter"
+import axios from 'axios';
+import { AuthContext } from '../../sharedComponents/context/AuthContext';
 
 
-function QuizCreateView() {
+function QuizEditView() {
 
     const [correctAnswers, setCorrectAnswers] = useState([0,0,0,0])
     const [questionText, setQuestionText] = useState("")
@@ -19,17 +20,25 @@ function QuizCreateView() {
     const [quizQustion, setQuizQuestion] = useState({id: 0, question: "", correct: [], answerAlt1: "", answerAlt2: "", answerAlt3: "", answerAlt4: ""})
     const [edit, setEdit] = useState({})
 
-
-    let navigate = useNavigate()
+    const location = useLocation()
+    // Get quizID from browser
+    let quizID = location.pathname.split("/")[2]
     const { user } = useContext(AuthContext)
-
- 
+  
+    let navigate = useNavigate()
     // NEXT - RESTRICT SAVE IF QUESTION HAS NOO QUESTION TEXT OR ONE CORRECT ANSWER
     // NEXT - WRITE ERROR MESSAGE IN RED WHEN QUESTION IN NOT CORRECTLY DONE
     // NEXT - ROTATE QUESTION LIST SO NEWEST CREATED QUESTION IS IN THE TOP
     // NEXT - ADD CORRECT QUIZ DATA IF EDIT QUIZ
     // NEXT - CREATE A LOGIN PAGE AND SEND DATA FROM THERE, MAYBE THIS CAN BE IMPLEMENTED LATER
 
+    const {data, loading, error} = useFetch(`http://localhost:8800/server/quiz/${quizID}`)
+  //  console.log("quizdatatocreate2", data)
+
+    useEffect(() => {
+        setQuiz(DatabaseToEditorQuiz(data))
+        console.log("quiz", quiz)
+    }, [data])
     
     // Add question text input to state: questionText
     const questionTextInput = event => {setQuestionText(event.target.value)};
@@ -91,7 +100,6 @@ function QuizCreateView() {
         // Empty edit state
         setTimeout(function() {setEdit({})}, 100);
         
-        console.log("quiz", quiz)
     }
 
 
@@ -146,6 +154,11 @@ function QuizCreateView() {
         setQuiz(quiz => [...quiz, questionCopy]); 
     }
 
+    useEffect(() => {
+    //    console.log("quiz", quiz)
+    })
+
+    
 
     // Separation of Framer Motion animation for buttons
     const btnMotion = {
@@ -157,7 +170,7 @@ function QuizCreateView() {
 
     const saveAndExit = async () => {
         try {
-            const res = await axios.post(`http://localhost:8800/server/quiz/${user._id}`, EditorToDatabaseQuiz(quiz))
+            const res = await axios.put(`http://localhost:8800/server/quiz/${quizID}`, EditorToDatabaseQuiz(quiz))
             navigate("/quizview")
             return res.data
         } catch(err) {
@@ -179,7 +192,7 @@ function QuizCreateView() {
                 <div className="quizCreateView_wrapper_top">
                     <div className="quizCreateView_wrapper_top_left"></div>
                     <div className="quizCreateView_wrapper_top_middle">
-                        <div className="quizCreateView_title">CREATE  QUIZ</div>
+                        <div className="quizCreateView_title">EDIT  QUIZ</div>
                     </div>
                     <div className="quizCreateView_wrapper_top_right">
                         <div className="quizCreateView_doneBtn" onClick={() => {saveAndExit()}}><p>Done</p></div>
@@ -228,19 +241,43 @@ function QuizCreateView() {
 
                     <div className="quizCreateView_allQuestionsSection">
                         
-                        {quiz.map((question, i) => {
-                            return (
-                                <div key={i} className="quizCreateView_allQuestions_questionbox">
-                                    <div className="quizCreateView_questionbox_number">{i + 1}.</div>
-                                    <div className="quizCreateView_questionbox_questionText">{question.question}</div>
-                                    <div className="quizCreateView_questionbox_iconbox">
-                                        <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {editQuestion(i)}} className='quizCreateView_questionbox_iconbox_edit'></motion.div>
-                                        <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {copyQuestion(i)}} className='quizCreateView_questionbox_iconbox_copy'></motion.div>
-                                        <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {deleteQuestion(i)}} id="deletebtn"  className='quizCreateView_questionbox_iconbox_delete'></motion.div>
+                        {quiz.hasOwnProperty("questions") ? (
+
+                            quiz.questions.map((question, i) => {
+                                return (
+                                    <div key={i} className="quizCreateView_allQuestions_questionbox">
+                                        <div className="quizCreateView_questionbox_number">{i + 1}.</div>
+                                        <div className="quizCreateView_questionbox_questionText">{question.questionText}</div>
+                                        <div className="quizCreateView_questionbox_iconbox">
+                                            <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {editQuestion(i)}} className='quizCreateView_questionbox_iconbox_edit'></motion.div>
+                                            <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {copyQuestion(i)}} className='quizCreateView_questionbox_iconbox_copy'></motion.div>
+                                            <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {deleteQuestion(i)}} id="deletebtn"  className='quizCreateView_questionbox_iconbox_delete'></motion.div>
+                                        </div>
                                     </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })
+
+                        ) : (
+
+                            quiz.map((question, i) => {
+                                return (
+                                    <div key={i} className="quizCreateView_allQuestions_questionbox">
+                                        <div className="quizCreateView_questionbox_number">{i + 1}.</div>
+                                        <div className="quizCreateView_questionbox_questionText">{question.question}</div>
+                                        <div className="quizCreateView_questionbox_iconbox">
+                                            <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {editQuestion(i)}} className='quizCreateView_questionbox_iconbox_edit'></motion.div>
+                                            <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {copyQuestion(i)}} className='quizCreateView_questionbox_iconbox_copy'></motion.div>
+                                            <motion.div whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} onClick={() => {deleteQuestion(i)}} id="deletebtn"  className='quizCreateView_questionbox_iconbox_delete'></motion.div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+
+
+                        )
+                        
+                        
+                        }
                         
                     </div>
 
@@ -251,12 +288,4 @@ function QuizCreateView() {
   )
 }
 
-export default QuizCreateView
-
-
-
-
-
-
-
-
+export default QuizEditView
