@@ -10,6 +10,7 @@ import reportIcon from "../../imageAssets/reportIcon.png"
 import deleteIcon from "../../imageAssets/deleteIcon.png"
 import useFetch from '../../sharedComponents/hooks/useFetch';
 import { AuthContext } from '../../sharedComponents/context/AuthContext'
+import axios from 'axios';
 
 function QuizView() {
 
@@ -60,7 +61,24 @@ function QuizView() {
     useEffect(() => {filterUsersQuiz()}, [data])
 
 
-    // NEXT - GET SELECTED QUIZ WHEN CLICKING ON EDIT BUTTON
+    const deleteQuiz = async (quizID) => {
+        try {
+            const res = await axios.delete(`http://localhost:8800/server/quiz/${quizID}/${user._id}`)
+            
+            setUsersQuiz(usersQuiz.filter(item => item._id !== quizID));
+           
+            return res.data
+        } catch(err) {
+            console.log(err)
+        }
+
+              
+    }
+
+   
+
+
+
   
 
   return (
@@ -81,14 +99,20 @@ function QuizView() {
                         <img src={newIcon} alt="" />
                     </div>
                     <div className="quizView_createQuizBtn_textSection"><p>Create a new quiz</p></div>
-                </motion.div></Link>
+                </motion.div></Link>  
+                
+                {usersQuiz.includes(undefined) ? ("") : (
 
                 <div className="quizView_quizBtn_container" >
                 
+                
                     {loading ? ("Loading, quiz") : (
-
-                        usersQuiz.map((quiz) => {
-                            return (
+                        
+                        
+                        
+                            usersQuiz.map((quiz) => {
+                                
+                                return (
                                 
                                     <div key={quiz._id}>
                                         <div className="quizView_quizBtn">
@@ -99,7 +123,7 @@ function QuizView() {
                                             <div className="quizView_quizBtn_actionSection">
                                                <Link to={`/editquiz/${quiz._id}`} style={{ textDecoration: 'none' }}><motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_quizBtn_btns" src={editIcon} alt="" /></Link>
                                                 <motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_quizBtn_btns" onClick={() => {toggleReportContainer(setReportToggle(true))}} src={reportIcon} alt="" />
-                                                <motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_quizBtn_btns" src={deleteIcon} alt="" />
+                                                <motion.img whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.55 }} transition={{ type: "spring", stiffness: 200, damping: 40 }} className="quizView_quizBtn_btns" onClick={() => {deleteQuiz(quiz._id)}} src={deleteIcon} alt="" />
                                             </div>
                                         </div>
                                     
@@ -109,10 +133,13 @@ function QuizView() {
                                         </div>
                                     </div>
                                
-                                    )
+                                )
+
+
+                            
                         })
 
-
+                        
 
                     )}
                     
@@ -123,7 +150,7 @@ function QuizView() {
 
                 </div>
 
-                
+                ) }
 
 
             </div>
