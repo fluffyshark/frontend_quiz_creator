@@ -70,8 +70,9 @@ function QuizCreateView() {
 
         
         // Add questionText, answerAlt, correctAnswers to quizQustion
-        setQuiz(quiz => [...quiz, quizQustion]);
-
+      //  setQuiz(quiz => [...quiz, quizQustion]);
+        setQuiz(quiz => [quizQustion, ...quiz]);
+      
         document.getElementById("questionInput").value = ""
         document.getElementById("answerAlt1").value = ""
         document.getElementById("answerAlt2").value = ""
@@ -143,7 +144,7 @@ function QuizCreateView() {
         // Create a new unique id for the new duplicate
         const id = Math.floor(Math.random() * 100000000); questionCopy.id = id
         // Add copy to quiz list
-        setQuiz(quiz => [...quiz, questionCopy]); 
+        setQuiz(quiz => [questionCopy, ...quiz]); 
     }
 
 
