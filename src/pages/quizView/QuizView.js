@@ -12,13 +12,18 @@ import useFetch from '../../sharedComponents/hooks/useFetch';
 import { AuthContext } from '../../sharedComponents/context/AuthContext'
 import axios from 'axios';
 
-function QuizView() {
+function QuizView({userCredentials}) {
 
     const [reportToggle, setReportToggle] = useState(false)
     const [usersQuiz, setUsersQuiz] = useState([])
+    const [userQuizID, setUserQuizID] = useState([])
+    const [credentials, setCredentials] = useState({
+        username:"",
+        password:""
+    })
 
-    const {data, loading, error} = useFetch("http://localhost:8800/server/quiz")
-    const { user } = useContext(AuthContext)
+    let {data, loading, error} = useFetch("http://localhost:8800/server/quiz")
+    let { user } = useContext(AuthContext)
 
     function toggleReportContainer() {
         if (reportToggle) {
@@ -31,18 +36,25 @@ function QuizView() {
         }
     } // End of toggleReportContainer()
 
-    
+    useEffect(() => {
+        setCredentials(userCredentials)
+    }, [userCredentials])
+
     
     // Store user created quizes in usersQuiz state
     function filterUsersQuiz() {
+
+        
         // Only run if data is fetched (not empty)
         if (data.length > 0) {
-         
+            
             let userQuizNested = []
             let userOwnedQuiz = []
 
+            
+            
             // Sort the quizes that the user created into an array (create a nested array)
-            user.quizID.map((quiz) => {
+            userQuizID.map((quiz) => {
                 userQuizNested.push(data.filter(quiz1 => quiz1._id === quiz))
             })
         
@@ -50,7 +62,7 @@ function QuizView() {
             for (let i = 0; i < userQuizNested.length; i++) {
                 userOwnedQuiz[i] = userQuizNested[i][0]
             }
-
+            console.log("userOwnedQuiz", userOwnedQuiz)
             // Store user created quiz in state
             setUsersQuiz(userOwnedQuiz)
         }
@@ -58,7 +70,7 @@ function QuizView() {
 
 
 
-    useEffect(() => {filterUsersQuiz()}, [data])
+    useEffect(() => {getUserQuizID(); filterUsersQuiz()}, [data])
 
 
     const deleteQuiz = async (quizID) => {
@@ -70,16 +82,21 @@ function QuizView() {
             return res.data
         } catch(err) {
             console.log(err)
-        }
-
-              
-    }
+        }     
+    } // End of deleteQuiz()
 
    
+    let getUserQuizID = async () => {
+        try {
+            const res = await axios.post("http://localhost:8800/server/auth/login", userCredentials)
+            setUserQuizID(res.data.quizID);
+          } catch (err) {
+            console.log(err)
+          }
+ 
+    }
 
 
-
-  
 
   return (
     <div className='quizView'>

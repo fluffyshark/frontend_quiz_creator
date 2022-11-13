@@ -13,6 +13,7 @@ import { AuthContext } from '../../sharedComponents/context/AuthContext';
 
 function QuizEditView() {
 
+    const [titleText, setTitleText] = useState("no title")
     const [correctAnswers, setCorrectAnswers] = useState([0,0,0,0])
     const [questionText, setQuestionText] = useState("")
     const [answerAlt, setAnswerAlt] = useState([])
@@ -37,9 +38,15 @@ function QuizEditView() {
 
     useEffect(() => {
         setQuiz(DatabaseToEditorQuiz(data))
+        setTitleText(data.quizName)
+        document.getElementById("titleInput").value = titleText
         console.log("quiz", quiz)
     }, [data])
     
+
+    // Add title text input to state: titleText
+    const titleTextInput = event => {setTitleText(event.target.value)}
+
     // Add question text input to state: questionText
     const questionTextInput = event => {setQuestionText(event.target.value)};
     
@@ -170,7 +177,7 @@ function QuizEditView() {
 
     const saveAndExit = async () => {
         try {
-            const res = await axios.put(`http://localhost:8800/server/quiz/${quizID}`, EditorToDatabaseQuiz(quiz))
+            const res = await axios.put(`http://localhost:8800/server/quiz/${quizID}`, EditorToDatabaseQuiz(quiz, titleText))
             navigate("/quizview")
             return res.data
         } catch(err) {
@@ -203,6 +210,10 @@ function QuizEditView() {
                 
                 <div className="quizCreateView_createSection">
                     
+                    <div className="quizCreateView_writeQuizName">
+                        <input type="text" placeholder='Name your quiz...' id="titleInput" onChange={titleTextInput}/>
+                    </div>
+
                     <div className="quizCreateView_writeQuestion">
                         <input type="text" placeholder='Write a question...' id="questionInput" onChange={questionTextInput}/>
                         <motion.div onClick={() => {saveQuestion()}} whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} className="quizCreateView_writeQuestion_save"></motion.div>

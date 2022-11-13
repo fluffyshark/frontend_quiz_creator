@@ -6,7 +6,7 @@ import { AuthContext } from '../../sharedComponents/context/AuthContext'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
-function LoginView() {
+function LoginView({getUserCredentials}) {
 
     const [credentials, setCredentials] = useState({
         username:undefined,
@@ -18,7 +18,10 @@ function LoginView() {
     const navigate = useNavigate()
 
     const handleChange = (e) => {
+        // Send credentials to use for fetching user from database
         setCredentials(prev => ({...prev, [e.target.id]:e.target.value}))
+        // Send credentials to App.js to be used in QuizView
+        getUserCredentials(prev => ({...prev, [e.target.id]:e.target.value}))
     }
 
     const handleClick = async e => {

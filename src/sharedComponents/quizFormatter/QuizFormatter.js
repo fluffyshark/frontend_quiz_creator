@@ -1,7 +1,7 @@
-export const EditorToDatabaseQuiz = (unformattedQuiz) => {
+export const EditorToDatabaseQuiz = (unformattedQuiz, quiztitle) => {
     
     let formattedQuiz = {
-        quizName: "No name",
+        quizName: quiztitle,
         questions: []
     }
 

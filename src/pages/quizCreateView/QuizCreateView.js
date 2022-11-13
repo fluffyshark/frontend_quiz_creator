@@ -12,6 +12,7 @@ import { EditorToDatabaseQuiz } from "../../sharedComponents/quizFormatter/QuizF
 
 function QuizCreateView() {
 
+    const [titleText, setTitleText] = useState("no title")
     const [correctAnswers, setCorrectAnswers] = useState([0,0,0,0])
     const [questionText, setQuestionText] = useState("")
     const [answerAlt, setAnswerAlt] = useState([])
@@ -30,6 +31,8 @@ function QuizCreateView() {
     // NEXT - ADD CORRECT QUIZ DATA IF EDIT QUIZ
     // NEXT - CREATE A LOGIN PAGE AND SEND DATA FROM THERE, MAYBE THIS CAN BE IMPLEMENTED LATER
 
+    // Add title text input to state: titleText
+    const titleTextInput = event => {setTitleText(event.target.value)}
     
     // Add question text input to state: questionText
     const questionTextInput = event => {setQuestionText(event.target.value)};
@@ -83,6 +86,8 @@ function QuizCreateView() {
         document.getElementById("secondAltImg").src = wrongIcon
         document.getElementById("thirdAltImg").src = wrongIcon
         document.getElementById("fouthAltImg").src = wrongIcon
+
+        document.getElementById("questionInput").value = ""
         
         setAnswerAlt([])
         setQuestionText("")
@@ -158,7 +163,7 @@ function QuizCreateView() {
 
     const saveAndExit = async () => {
         try {
-            const res = await axios.post(`http://localhost:8800/server/quiz/${user._id}`, EditorToDatabaseQuiz(quiz))
+            const res = await axios.post(`http://localhost:8800/server/quiz/${user._id}`, EditorToDatabaseQuiz(quiz, titleText))
             navigate("/quizview")
             return res.data
         } catch(err) {
@@ -191,6 +196,10 @@ function QuizCreateView() {
                 
                 <div className="quizCreateView_createSection">
                     
+                    <div className="quizCreateView_writeQuizName">
+                        <input type="text" placeholder='Name your quiz...' id="titleInput" onChange={titleTextInput}/>
+                    </div>
+
                     <div className="quizCreateView_writeQuestion">
                         <input type="text" placeholder='Write a question...' id="questionInput" onChange={questionTextInput}/>
                         <motion.div onClick={() => {saveQuestion()}} whileHover={btnMotion.hover} whileTap={btnMotion.tap} transition={btnMotion.trans} className="quizCreateView_writeQuestion_save"></motion.div>
